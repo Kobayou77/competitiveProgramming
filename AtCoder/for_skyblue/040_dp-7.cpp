@@ -1,0 +1,101 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+ll MOD = 1000000007;
+
+#define vec                vector<int>
+#define vecll              vector<ll>
+#define vecd               vector<double>
+#define vecst              vector<string>
+#define vecb               vector<bool>
+#define vec2(var, n, m)    vector<vector<int>> var(n, vector<int>(m, 0))
+#define vecll2(var, n, m)  vector<vector<ll>> var(n, vector<ll>(m, 0))
+
+#define rep(i,n)         for(ll i=(ll)0; i<(ll)n; i++)
+#define REP(i,m,n)       for(ll i=(ll)m; i<(ll)n; i++)
+#define arr(var, n)      vec var(n); rep(i,n){cin >> var[i];}
+#define arrll(var, n)    vecll var(n); rep(i,n){cin >> var[i];}
+#define arrst(var, n)    vecst var(n); rep(i,n){cin >> var[i];}
+#define all(var)         (var).begin(), (var).end()
+#define sortall(var)     sort(all(var))
+#define uniqueall(v)     v.erase(unique(v.begin(), v.end()), v.end());
+#define f_sum(var)       accumulate(all(var), 0)
+#define f_sumll(var)     accumulate(all(var), 0LL)
+#define chmin(v1, v2)    v1 = min(v1, v2)
+#define chmax(v1, v2)    v1 = max(v1, v2)
+#define pb(var)          push_back(var)
+#define prt(var)         cout << (var) << "\n"
+#define prtd(n, var)     cout << fixed << setprecision(n) << (var) << "\n"
+#define prtfill(n, var)  cout << setw(n) << setfill('0') << (var);
+#define prt2(v1, v2)     cout << (v1) << " " << (v2) << "\n"
+#define prt3(v1, v2, v3) cout << (v1) << " " << (v2) << " " << (v3) << "\n"
+#define prtall(v)        rep(i,v.size()){cout<<v[i]<<(i!=v.size()-1?" ":"\n");}
+void prtok(bool ok){prt(ok ? "Yes" : "No");}
+//----------------------------------------------------------------
+
+int main(void) {
+  int N, K;
+  cin >> N >> K;
+  vec a(N+1, -1);
+  rep(i,K){
+    int day, typ;
+    cin >> day >> typ;
+    typ--;
+    a[day]=typ;
+  }
+
+  int dp[N+1][3][3];
+  rep(i,N+1){
+    rep(j,3){
+      rep(k,3){
+        dp[i][j][k]=0;
+      }
+    }
+  }
+
+  rep(i,3){
+    rep(j,3){
+      if(a[N-1]==-1 && a[N]==-1){
+        dp[N-1][i][j]=1;
+      } else if(a[N-1]==-1 && a[N]!=-1){
+        dp[N-1][i][a[N]]=1;
+      } else if(a[N-1]!=-1 && a[N]==-1){
+        dp[N-1][a[N-1]][j]=1;
+      } else {
+        dp[N-1][a[N-1]][a[N]]=1;
+      }
+    }
+  }
+
+  for(int i=N-2; i>0; i--){
+    if(a[i]==-1){
+      rep(j,3){
+        rep(k,3){
+          rep(l,3){
+            dp[i][j][k] += ((j==k && k==l) ? 0 : dp[i+1][k][l]);
+            dp[i][j][k] %= 10000;
+          }
+        }
+      }
+    } else {
+      rep(j,3){
+        rep(k,3){
+          dp[i][a[i]][j] += ((a[i]==j && j==k) ? 0 : dp[i+1][j][k]);
+          dp[i][j][k] %= 10000;
+        }
+      }
+    }
+  }
+
+  int ans=0;
+  rep(i,3){
+    rep(j,3){
+      ans += dp[1][i][j];
+      ans %= 10000;
+    }
+  }
+
+  prt(ans);
+
+
+}
