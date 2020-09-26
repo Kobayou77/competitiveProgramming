@@ -46,27 +46,27 @@ public:
   ~FenwickTree(){}
 
   void add(int p, ll x) {
-      assert(0 <= p && p < n);
-      p++;
-      while (p <= n) {
-          dat[p - 1] += x;
-          p += p & -p;
-      }
+    assert(0 <= p && p < n);
+    p++;
+    while (p <= n) {
+      dat[p - 1] += x;
+      p += p & -p;
+    }
   }
 
   ll sum(int l, int r) {
-      assert(0 <= l && l <= r && r <= n);
-      return sum(r) - sum(l);
+    assert(0 <= l && l <= r && r <= n);
+    return sum(r) - sum(l);
   }
 
 private:
   ll sum(int r) {
-      ll s = 0;
-      while (r > 0) {
-          s += dat[r - 1];
-          r -= r & -r;
-      }
-      return s;
+    ll s = 0;
+    while (r > 0) {
+      s += dat[r - 1];
+      r -= r & -r;
+    }
+    return s;
   }
 };
 
